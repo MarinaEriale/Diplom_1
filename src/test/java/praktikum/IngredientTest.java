@@ -8,6 +8,8 @@ import org.junit.runners.Parameterized;
 import static praktikum.IngredientType.FILLING;
 import static praktikum.IngredientType.SAUCE;
 
+import static praktikum.constant.Delta.DELTA;
+
 @RunWith(Parameterized.class)
 public class IngredientTest {
    private final IngredientType type;
@@ -32,7 +34,7 @@ public class IngredientTest {
     @Test
     public void getPriceTest() {
         Ingredient ingredient = new Ingredient(type, name, price);
-        Assert.assertEquals(price, ingredient.getPrice(), 0);
+        Assert.assertEquals(price, ingredient.getPrice(), DELTA);
     }
 
     @Test

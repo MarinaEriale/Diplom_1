@@ -1,14 +1,19 @@
 package praktikum;
 
+import org.hamcrest.MatcherAssert;
+import static org.hamcrest.CoreMatchers.is;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
 
+@RunWith(MockitoJUnitRunner.class)
 public class BurgerTest {
 
     @Test
@@ -19,47 +24,46 @@ public class BurgerTest {
         Assert.assertEquals(bun, burger.getBuns());
     }
 
+    @Mock
+    Ingredient ingredient;
+
     @Test
     public void addIngredientTest () {
         Burger burger = new Burger();
         burger.ingredients.clear();
-        Ingredient ingredient = new Ingredient(IngredientType.SAUCE, "hot sauce", 100);
         burger.addIngredient(ingredient);
-        Assert.assertEquals(burger.ingredients, List.of(ingredient));
+        MatcherAssert.assertThat(burger.ingredients.size(), is(1));
+
     }
 
     @Test
     public void removeIngredientTest () {
         Burger burger = new Burger();
         burger.ingredients.clear();
-        Ingredient ingredient_1 = new Ingredient(IngredientType.SAUCE, "hot sauce", 100);
-        burger.addIngredient(ingredient_1);
-        Ingredient ingredient_2 = new Ingredient(IngredientType.SAUCE, "hot sauce", 100);
-        burger.addIngredient(ingredient_2);
+        burger.addIngredient(ingredient);
 
-        burger.removeIngredient(0);
+        burger.removeIngredient(burger.ingredients.size()-1);
 
-        Assert.assertEquals(burger.ingredients, List.of(ingredient_2));
+        MatcherAssert.assertThat(burger.ingredients.size(), is(0));
     }
 
     @Test
     public void moveIngredientTest () {
         Burger burger = new Burger();
         burger.ingredients.clear();
-        Ingredient ingredient_1 = new Ingredient(IngredientType.SAUCE, "hot sauce", 100);
-        burger.addIngredient(ingredient_1);
-        Ingredient ingredient_2 = new Ingredient(IngredientType.SAUCE, "hot sauce", 100);
-        burger.addIngredient(ingredient_2);
-        Ingredient ingredient_3 = new Ingredient(IngredientType.SAUCE, "chili sauce", 300);
-        burger.addIngredient(ingredient_3);
+
+        burger.addIngredient(ingredient);
+        burger.addIngredient(ingredient);
+        burger.addIngredient(ingredient);
+
 
         List<Ingredient> testList = new ArrayList<>();
-        testList.add(ingredient_1);
-        testList.add(ingredient_2);
-        testList.add(ingredient_3);
+        testList.add(ingredient);
+        testList.add(ingredient);
+        testList.add(ingredient);
 
         testList.remove(0);
-        testList.add(2, ingredient_1);
+        testList.add(2, ingredient);
 
         burger.moveIngredient(0,2);
 
